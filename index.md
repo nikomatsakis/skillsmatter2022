@@ -11,38 +11,43 @@ count: false
 
 ---
 
-## Who is this guy
+# Who is this guy
 
 .text300[👋🏽 Hi!]
 
---
+---
 
-Niko:
+# Me
 
-* Been doing Rust since 2011
+.p20[![Me](./images/me.png)]
+
+* Been working on Rust since 2011
 * Co-lead of the Rust language design team
 
 ---
 
-## Rust sprouting up all over
+# Rust sprouting up all over
 
 ![Foundation sponsors](images/sponsors.jpg)
 
+... and those are just the foundation platinum sponsors.
+
 ---
 
-## What are people doing with Rust?
+# What are people doing with Rust?
 
 All kinds of things...
 
 * Networking
 * Embedded development
-* Kernels and kernel modules
+* Kernels, kernel modules
+* Blockchain
 * CLI apps (ripgrep, just, tokei, ...)
 * ...and much more
 
 ---
 
-## Why work on Rust?
+# Why work on Rust?
 
 ???
 
@@ -60,7 +65,7 @@ No, though I do think they have a tendency to make a mess.
 
 ---
 
-## Why work on Rust?
+# Why work on Rust?
 
 ???
 
@@ -85,7 +90,7 @@ or Go, and we're proud of that.
 
 ---
 
-## What's Rust's secret sauce?
+# What's Rust's secret sauce?
 
 ???
 
@@ -111,7 +116,7 @@ Type systems don't always have a reputation as empowering.
 
 ---
 
-## Rust's type system == spinach
+# Rust's type system == spinach
 
 ![Spinach](./images/spinach.jpg)
 
@@ -125,7 +130,7 @@ To many people, a type system feels a bit like spinach. A vegetable that you eat
 
 ---
 
-## Rust's type system == POPEYE spinach
+# Rust's type system == POPEYE spinach
 
 .p80[![Popeye](./images/popeye.jpg)]
 
@@ -138,7 +143,7 @@ programs you can rely on. It lets you go from "this ought to be easy" to code th
 
 ---
 
-## Example: Mozilla and Stylo
+# Example: Mozilla and Stylo
 
 ![Bugzilla 631527, opened 12 years ago, closed 4 years ago](images/bugzilla-631527-intro.png)
 
@@ -148,11 +153,9 @@ Let me give you an example, one that comes from Mozilla. Mozilla is the company 
 
 --
 
-.opened[![Arrow](./images/Arrow.png)]
-
---
-
 ![Comment 1: should be easy](images/bugzilla-631527-comment-1.png)
+
+.opened[![Arrow](./images/Arrow.png)]
 
 ???
 
@@ -170,9 +173,11 @@ The 3rd and final attempt used Rust, and had the codename stylo. This version la
 
 ---
 
-## Example: Tenable's metrics
+# Example: Tenable's metrics
 
-[[![Tenable: Optimizing 700 CPUs Away With Rust](images/tenable-intro.png)](https://medium.com/tenable-techblog/optimizing-700-cpus-away-with-rust-dc7a000dbdb2)](https://medium.com/tenable-techblog/optimizing-700-cpus-away-with-rust-dc7a000dbdb2)
+![Tenable: Optimizing 700 CPUs Away With Rust](images/tenable-intro.png)
+
+.citation[[Tenable blog post from 2021-05-06]((https://medium.com/tenable-techblog/optimizing-700-cpus-away-with-rust-dc7a000dbdb2)]
 
 ???
 
@@ -180,9 +185,9 @@ I want to give another example, this time coming from the other direction. Tenab
 
 ---
 
-## Example: Tenable's metrics
+# Example: Tenable's metrics
 
-![Tenable charts](images/tenable-charts.png)]
+![Tenable charts](images/tenable-charts.png)
 
 .tenable1[![Arrow](images/Arrow.png)]
 
@@ -196,7 +201,7 @@ Of course, the fact that Rust beats JavaScript on performance isn't exactly surp
 
 ---
 
-## Example: Tenable's metrics
+# Example: Tenable's metrics
 
 > With this small change, we were able to optimize away over 700 CPU and 300GB of memory. **This was all implemented, tested and deployed in a single sprint (two weeks).** Once the new filter was deployed, we were able to confirm the resource reduction in Datadog metrics.
 
@@ -207,13 +212,45 @@ and standing it up was not particularly difficult.
 
 ---
 
-## Example: Discord's "read states" service
+# Design goals for Rust
+
+| | |
+| --- | --- |
+| ⚙️ Reliable | "If it compiles, it works" |
+| 🐎 Performant | "idiomatic code runs efficiently" |
+| 🥰 Supportive | "the language, tools, and community are here to help" |
+| 🧩 Productive | "a little effort does a lot of work" |
+| 🔧 Transparent | "you can predict and control low-level details" |
+| 🤸 Versatile | "you can do anything with Rust" |
+
+.citation[Caveat: These are goals that some of us drafted, not official design goals of the Rust project.]
+
+---
+
+# Example: Discord's "read states" service
 
 ![Discord: why switching from Go to Rust](images/discord-title.png)
 
-![Discord: why switching from Go to Rust](images/discord-wins.png)
+.citation[[Discord blogpost from 2022-02-04](https://discord.com/blog/why-discord-is-switching-from-go-to-rust)]
 
 ???
+
+I want to give one more example, this time from Discord. Like Tenable, Discord ported a service to Rust, this time starting from Go.
+
+---
+
+
+# Example: Discord's "read states" service
+
+![Chart](images/discord-chart-gc.png)
+
+.gcpause[![Arrow pointing to GC pause](./images/Arrow.png)]
+
+.rustperf[![Arrow pointing to smooth Rust perf](./images/Arrow.png)]
+
+???
+
+Like Tenable, Discord ported a service to Rust, this time starting from Go. Also like Tenable, they got some nice performance wins from doing so. The full post is worth a read, they talk about how, now that they no longer have to worry about garbage collection latency, 
 
 I want to give one more example, this time from Discord. Like Tenable, Discord ported a service to Rust, this time starting from Go. Also like Tenable, they got some nice performance wins from doing so. The full post is worth a read, they talk about how, now that they no longer have to worry about garbage collection latency, 
 
@@ -221,7 +258,67 @@ In fairness to Go, I do want to say that they've made many improvements to their
 
 ---
 
-## Example: Discord's "read states" service
+# Example: Discord's "read states" service
+
+> We no longer had to deal with garbage collection, so we figured we could raise the cap of the cache and get even better performance. (...) The results below speak for themselves. **Notice the average time is now measured in microseconds and max @mention is measured in milliseconds**.
+
+???
+
+To me, the most interesting part of the post comes a bit later. Here, Rust allowed them to make further tweaks to their setup, resulting in even bigger gains. This is a pattern that we've seen before, and it aligns perfectly with one of Rust's slogans.
+
+---
+
+# Hack without fear
+
+Build the systems you want to build.
+
+???
+
+---
+
+# Rust 2024
+
+So where do we go from here?
+
+---
+
+# Rust at the start
+
+.p200[![Statue1](images/Statue1.png)]
+
+.citation[Artist: Daphne Matsakis]
+
+---
+
+## Rust 1.0 released in 2015
+
+.p200[![Statue1](images/Statue2.png)]
+
+.citation[Artist: Daphne Matsakis]
+
+???
+
+In May of 2015, we released Rust 1.0.
+
+---
+
+## Rust 2018
+
+.p200[![Statue1](images/Statue3.png)]
+
+.citation[Artist: Daphne Matsakis]
+
+
+---
+
+## Rust 2021
+
+.p200[![Statue1](images/Statue4.png)]
+
+
+---
+
+# Example: Discord's "read states" service
 
 ![Discord: where makes sense](images/discord-where-makes-sense.png)
 
@@ -243,7 +340,7 @@ In truth though, even I, Rust partisan that I am, would not claim Rust is the be
 
 ---
 
-## Where *does* it make sense to use Rust?
+# Where *does* it make sense to use Rust?
 
 Programs where:
 
@@ -277,13 +374,58 @@ To put another way, I think Rust is great choice for projects where you really w
 
 ## Why not Rust?
 
-???
-
-So why would you NOT use Rust? 
+* Existing system
+* Learning curve
+* Cognitive overhead
 
 ---
 
-## Why not Rust?
+## Existing system
+
+???
+
+The most obvious. If you've got existing code in some other language, integrating Rust isn't always easy. You have to find some kind of seamless boundary. It requires your team to know more than one language. There are good techniques here, but it is often not the right overall choice.
+
+---
+
+## Learning curve
+
+Most folks take 3-6 months to feel productive in Rust.
+
+???
+
+There's no denying it, learning Rust definitely takes time. I think it's worth the investment, but it's going to take some time. Why is that?
+
+---
+
+## Learning curve: new patterns
+
+???
+
+Part of it is that Rust requires learning some new patterns. This is the best part of the learning curve, 
+because these patterns help to make code bug-free in all languages. The major difference is that in Rust 
+you have compiler assistance.
+
+---
+
+## Learning curve: compiler and language limitations
+
+???
+
+But part of it is something else.
+
+---
+
+## Cognitive overhead
+
+
+
+
+
+
+
+
+
 
 * **Rough learning curve**
 
@@ -441,6 +583,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 ```rust
 let v = Box::new(vec![1, 2, 3]);
 ```
+
+---
+
+## Rust is evolving
+
+.p200[![Statue1](images/Statue1.png)]
+
+---
+
+## Rust 2015
+
+.p200[![Statue1](images/Statue2.png)]
+
+---
+
+## Rust 2018
+
+.p200[![Statue1](images/Statue3.png)]
+
+---
+
+## Rust 2021
+
+.p200[![Statue1](images/Statue4.png)]
 
 ---
 

@@ -298,6 +298,11 @@ mark,
   height: auto;
 }
 
+.p200 img {
+  width: 200%;
+  height: auto;
+}
+
 .white-text {
   color: #FFFFFF;
 }
@@ -425,23 +430,23 @@ mark,
 
 .opened img {
   position: absolute;
-  top: 60px;
+  top: 340px;
   left: 200px;
   width: 50px;
-  transform: rotate(90deg);
+  transform: rotate(200deg);
 }
 
 .closed img {
   position: absolute;
-  top: 525px;
-  left: 15px;
+  top: 480px;
+  left: 210px;
   width: 50px;
-  transform: rotate(00deg);
+  transform: rotate(200deg);
 }
 
 .tenable1 img {
   position: absolute;
-  top: 200px;
+  top: 250px;
   left: 500px;
   width: 50px;
   transform: rotate(135deg);
@@ -449,7 +454,7 @@ mark,
 
 .tenable2 img {
   position: absolute;
-  top: 450px;
+  top: 500px;
   left: 500px;
   width: 50px;
   transform: rotate(135deg);
@@ -459,6 +464,22 @@ mark,
   position: absolute;
   top: 100px;
   left: 750px;
+  width: 50px;
+  transform: rotate(135deg);
+}
+
+.gcpause img {
+  position: absolute;
+  top: 150px;
+  left: 535px;
+  width: 50px;
+  transform: rotate(135deg);
+}
+
+.rustperf img {
+  position: absolute;
+  top: 225px;
+  left: 545px;
   width: 50px;
   transform: rotate(135deg);
 }
