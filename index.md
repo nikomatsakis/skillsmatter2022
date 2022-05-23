@@ -524,6 +524,24 @@ Think back to the statue:
 
 **Inherent** vs **accidental** complexity
 
+???
+
+The way I see it, there are two core reasons people struggle with Rust. The
+first is inherent: Rust forces a certain rigor onto your work, and that can make
+it more complex. That's often useful, but not always, since sometimes the things
+that Rust is forcing you to be rigorous about are not that interesting. More on that
+in a second.
+
+But there's another source of complexity too -- more accidental. These are places 
+where the core concept Rust is enforcing isn't the problem, more the way that
+Rust enforces it, which will always be imperfect. 
+
+I tend to think of inherent complexity as that status inside the stone -- or perhaps
+even better than that, the image of the statue that I have in my mind.
+
+The accidental complexity is both the stone left unchiseled but also the mistakes
+that come out in the statue itself.
+
 ---
 
 name: code-example
@@ -545,28 +563,58 @@ fn get_lazy(list: &mut Vec<String>) -> &mut String {
 
 template: code-example
 
-`&mut` and the idea of "one mutable reference"
+.option[![Arrow pointing at option](images/Arrow.png)]
+
+???
+
+Here's an example we can use to explore this idea a bit. This is a function
+that, given a list, returns a mutable reference to the first item. If the
+list is empty, it first pushes a dummy item and returns that.
+
+There's a lot of Rust in this example. For example, you can see the `Option` type here.
+This is Rust's answer to null pointers, borrowed from ML and many other 
+functional languages. 
+
+The ability to create enums -- data types that can be one of many alternatives -- is
+a key part of how Rust models target domains, and it's one of those features that
+everybody loves.
+
+It's also part of how Rust achieves reliability: if you want to have something
+be nullable, you have to say so explicitly.
+
 
 ---
 
 template: code-example
 
-returning references
+.and-mut[![Arrow pointing at and-mut](images/Arrow.png)]
+
+???
+
+`&mut` references are a key part of Rust. 
+
+The idea is that when you create a reference, you gain unique access to that data
+for as long as the reference runs. 
+
+This *concept* I think is inherent complexity. It forces a certain style onto Rust code that takes a while to get used to. 
+
+But many 
 
 ---
 
 template: code-example
 
-options
+.ret-ref[![Arrow pointing at returning a ref](images/Arrow.png)]
+
+???
 
 ---
 
 template: code-example
 
-but this code won't compile
+.polonius[![Arrow pointing at option](images/Arrow.png)]
 
-polonius
-
+In fact, this code doesn't compile! When you return a reference, 
 ---
 
 # Workaround
@@ -582,6 +630,8 @@ fn get_lazy(list: &mut Vec<String>) -> &mut String {
     list.first_mut().unwrap()
 }
 ```
+
+How would you know that this is the fix?
 
 ---
 
