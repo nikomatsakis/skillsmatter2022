@@ -44,6 +44,14 @@ h3 {
   font-size: 50%;
 }
 
+.text200 {
+  font-size: 200%;
+}
+
+.text300 {
+  font-size: 300%;
+}
+
 ul {
   line-height: 150%;
 }
@@ -265,6 +273,26 @@ mark,
   width: 40%;
 }
 
+.p30 img {
+  width: 30%;
+}
+
+.p25 img {
+  width: 25%;
+}
+
+.p20 img {
+  width: 20%;
+}
+
+.p10 img {
+  width: 10%;
+}
+
+.p05 img {
+  width: 5%;
+}
+
 .p100 img {
   width: 100%;
   height: auto;
@@ -393,6 +421,54 @@ mark,
   left: 675px;
   width: 50px;
   transform: rotate(45deg);
+}
+
+.opened img {
+  position: absolute;
+  top: 60px;
+  left: 200px;
+  width: 50px;
+  transform: rotate(90deg);
+}
+
+.closed img {
+  position: absolute;
+  top: 525px;
+  left: 15px;
+  width: 50px;
+  transform: rotate(00deg);
+}
+
+.tenable1 img {
+  position: absolute;
+  top: 200px;
+  left: 500px;
+  width: 50px;
+  transform: rotate(135deg);
+}
+
+.tenable2 img {
+  position: absolute;
+  top: 450px;
+  left: 500px;
+  width: 50px;
+  transform: rotate(135deg);
+}
+
+.tenable3 img {
+  position: absolute;
+  top: 100px;
+  left: 750px;
+  width: 50px;
+  transform: rotate(135deg);
+}
+
+.wheremakessense img {
+  position: absolute;
+  top: 260px;
+  left: 5px;
+  width: 50px;
+  transform: rotate(0deg);
 }
 
 .annotate-data {
