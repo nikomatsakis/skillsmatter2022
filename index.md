@@ -270,7 +270,7 @@ To me, the most interesting part of the post comes a bit later. Here, Rust allow
 
 # Hack without fear
 
-Build the systems you want to build.
+Rust lets you build (and maintain!) the systems you want to build.
 
 ???
 
@@ -288,9 +288,13 @@ So where do we go from here?
 
 .citation[Artist: Daphne Matsakis]
 
+???
+
+When Rust first started, it wasn't clear what it should be. I think of it a bit like that famous quote about making a statue, where the idea is to look at some rock and see what is inside. I asked my daughter to draw some pictures the process, and this is the first one she drew.
+
 ---
 
-## Rust 1.0 released in 2015
+# Rust 1.0 released in 2015
 
 .p200[![Statue1](images/Statue2.png)]
 
@@ -298,165 +302,309 @@ So where do we go from here?
 
 ???
 
-In May of 2015, we released Rust 1.0.
+In May of 2015, we released Rust 1.0. At that point, the shape of Rust had become fairly clear, but there were still a lot of details to work out. Our goal with this release was to signal to people: Rust is ready for production use. 
 
 ---
 
-## Rust 2018
+# Rust 2018
 
 .p200[![Statue1](images/Statue3.png)]
 
 .citation[Artist: Daphne Matsakis]
 
+???
+
+Over the next few years, Rust picked up steam. As we gained experience, we started to see some "rough edges" that could be improved. There were a number of corner cases where we thought "if we could just tweak how this worked, we could make Rust a lot better for everyone" -- but we didn't want to break anybody's code, particularly after we had promised stability with 1.0.
+
+Our solution was Rust editions. The idea is that, approximately every 3 years, we release a new Rust edition that contains a few changes that would otherwise be backwards incompatible. The trick is that the Rust compiler supports all editions -- the old and the new. To take advantage of the new features, you can opt-in to the new edition, and we even have tooling that will help migrate your code for you.
+
+This way, new code immediately gains the benefit of the new edition. Old code continues to work and can migrate over to the edition at any time.
 
 ---
 
-## Rust 2021
+# Rust 2021
 
 .p200[![Statue1](images/Statue4.png)]
 
+???
+
+We released our second edition, Rust 2021, at the end of the last year. By this point, Rust's strong points -- and weak points -- are becoming quite clear.
 
 ---
 
-# Example: Discord's "read states" service
-
-![Discord: where makes sense](images/discord-where-makes-sense.png)
-
-???
-
-Actually, there's something else I want to highlight. At the end of their post, the Discord folks wrote this.
+# Rust 2024...?
 
 --
 
-.wheremakessense[![Arrow](./images/Arrow.png)]
-
-???
-
-In particular, this paragraph: "when starting a new project, we consider using rust, but of course we only use it where it makes sense."
-
-Based on what I've told you so far, you might have gotten the impression that Rust is always the best language to use. After all, I told you that you can get massive performance wins while maintaining high productivity. 
-
-In truth though, even I, Rust partisan that I am, would not claim Rust is the best fit for all projects. An awful lot of them, yes, but not all.
+Uh, I don't know. Nodody does, not yet.
 
 ---
 
-# Where *does* it make sense to use Rust?
+# Where we are
 
-Programs where:
+* If performance and reliability are your top considerations:
+    * Rust is your best choice
 
-* performance 
-* reliability
-* long-term maintenance
 
-are top considerations.
+* If ease of iteration is your top priority:
+    * Use a GC'd language like Python, Java, or Go
 
-???
 
-In my view, if you care about these 3 things, then Rust is the best choice, hands down. We can actually see all of these in the stories I gave.
-
-*Performance* is obviously a key consideration for everyone.
-
-*Reliability* 
-
-*Long-term maintenance* 
+* But what about the software in the middle?
 
 ---
 
-.p20[![Ferris](./images/ferris.svg)] says:
+# Rust 2024
 
-.text200["A stitch in time saves nine."]
+I think we want a combination of
 
-???
-
-To put another way, I think Rust is great choice for projects where you really want to get it right, and you're willing to put in the time for that.
+* Building on our strengths
+* Addressing our weaknesses
+* Think big opportunities
 
 ---
 
-## Why not Rust?
+# Building on our strengths
 
-* Existing system
+Rust is doing really well in several areas:
+
+* Networking
+* Embedded systems, IoT
+* Kernels, core architectural layers
+
+---
+
+# Rust in networking, circa 2018
+
+```rust
+async fn process_connection() {
+    something().await;
+
+    tokio::spawn(async move { ... })
+}
+```
+
+---
+
+# Rust in networking, circa 2021
+
+* Async fn enables lightweight tasks and a natural coding style...
+    * ...but support is missing from many areas of the language, like traits, closures, async-drop.
+
+---
+
+# Rust in networking, circa 2021
+
+Closing the gap requires a number of crates and tools:
+
+* `async_trait` proc macro (shown below)
+* `futures` crate combinators
+* ...and some things, like async drop, just don't work.
+
+
+```rust
+#[async_trait]
+trait AsyncIterator {
+    type Item;
+
+    async fn next(&mut self) -> Option<Self::Item>;
+}
+```
+
+---
+
+# Rust in networking, circa 2021
+
+* Async fn enables lightweight tasks and a natural coding style...
+    * ...but support is missing from many areas of the language, like traits, closures, async-drop.
+
+--
+
+* Great networking runtimes like tokio, async-std, glommio, embassy, fuschia...
+    * ...but no mechanism for interop, leading to a lack of widely used libraries as well as surprising failures.
+
+--
+
+* Rust developer tooling like cargo, rust-analyzer, rustup is excellent...
+    * ...but relatively limited options to debug/profile/test applications, especially async ones.
+
+[See async vision doc for more.]()
+
+---
+
+# Rust in networking, circa 2024
+
+* Async fn can be used everywhere: traits, closures, drop
+* Rich, interoperable library ecosystem
+* Tooling to analyze and debug neworked applications
+* Works on servers as well as bare-metal environments
+
+---
+
+# How do we get there?
+
+[Async vision doc]() lays out a few key areas:
+
+* Core compiler support for async functions in traits
+* Traits for interoperability (read, write, spawn, etc)
+* Polish, diagnostics, tooling support
+
+[Would you like to help?]
+
+---
+
+# Building on our strengths
+
+* Networking:
+    * Async vision doc
+
+
+* Embedded, IoT, kernels:
+    * Stabilize Rust features that give control over low-level details
+    * Take advantage of custom details about a given platform
+
+
+* General:
+    * Rules and tools for unsafe code
+
+---
+
+# Rust 2024
+
+I think we want a combination of
+
+* Building on our strengths :check:
+* **Addressing our weaknesses**
+* Think big opportunities
+
+---
+
+# Addressing our weakenesses
+
+Rust has some challenges:
+
 * Learning curve
 * Cognitive overhead
 
 ---
 
-## Existing system
+# Journey to loving Rust
 
-???
+Most folks take 3-6 months to learn Rust.
 
-The most obvious. If you've got existing code in some other language, integrating Rust isn't always easy. You have to find some kind of seamless boundary. It requires your team to know more than one language. There are good techniques here, but it is often not the right overall choice.
+At first, it's ridiculously frustrating.
 
----
-
-## Learning curve
-
-Most folks take 3-6 months to feel productive in Rust.
-
-???
-
-There's no denying it, learning Rust definitely takes time. I think it's worth the investment, but it's going to take some time. Why is that?
+At some point, you turn the corner, and -- for many of us -- it's hard to imagine using another language.
 
 ---
 
-## Learning curve: new patterns
+# Key to loving Rust
 
-???
+Learning to *leverage* the Rust type system instead of *fighting* it.
 
-Part of it is that Rust requires learning some new patterns. This is the best part of the learning curve, 
-because these patterns help to make code bug-free in all languages. The major difference is that in Rust 
-you have compiler assistance.
+Rust is pushing you towards new patterns. Those patterns are hard to learn, but they are (usually) beneficial.
 
 ---
 
-## Learning curve: compiler and language limitations
+# Detours
 
-???
+But not everybody comes to love Rust. 
 
-But part of it is something else.
+Some 20% of people on the Rust survey use Rust daily and yet say they "struggle" to be productive.
 
----
-
-## Cognitive overhead
-
-
-
-
-
-
-
-
-
-
-* **Rough learning curve**
-
-???
-
-The most common reason people give you is the learning curve. There's no getting around it, learning Rust takes time!
+Why?
 
 ---
 
-## Rough learning curve
+# Why do people struggle?
 
-Combination of a few factors
+Think back to the statue:
 
-* New concepts
-* Materials and techniques
-* Incomplete language features
+.p60[![Statue1](images/Statue4.png)]
 
----
-
-## Why not Rust?
-
-* Rough learning curve
-* **Cognitive overhead**
-
-???
-
-The other reason is interesting. I'm going to call it *cognitive overhead*.
+**Inherent** vs **accidental** complexity
 
 ---
 
-## Cognitive overhead
+name: code-example
+
+# Inherent vs accidental complexity
+
+```rust
+fn get_lazy(list: &mut Vec<String>) -> &mut String {
+    if let Some(s) = list.first_mut() {
+        return s;
+    }
+
+    list.push(format!("Hello, world!"));
+    list.first_mut().unwrap()
+}
+```
+
+---
+
+template: code-example
+
+`&mut` and the idea of "one mutable reference"
+
+---
+
+template: code-example
+
+returning references
+
+---
+
+template: code-example
+
+options
+
+---
+
+template: code-example
+
+but this code won't compile
+
+polonius
+
+---
+
+# Workaround
+
+```rust
+fn get_lazy(list: &mut Vec<String>) -> &mut String {
+    if !list.is_empty() {
+        let s = list.first_mut().unwrap();
+        return s;
+    }
+
+    list.push(format!("Hello, world!"));
+    list.first_mut().unwrap()
+}
+```
+
+---
+
+# Reducing accidental complexity
+
+* Language changes like polonius, implied bounds
+* Better environments and materials for learners:
+    * Visualize Rust rules
+    * Teach borrow checker patterns
+
+---
+
+# Rust 2024
+
+I think we want a combination of
+
+* Building on our strengths :check:
+* Addressing our weaknesses :check:
+* **Think big opportunities**
+
+---
+
+# Cognitive overhead
 
 Rust makes you care about
 
@@ -464,152 +612,152 @@ Rust makes you care about
 * reliability
 * long-term maintenance
 
-...and you don't always want to.
-
-???
-
-It's kind of the flip side of Rust's strength. Rust 
+...even when you don't want to.
 
 ---
 
-## Care about performance
+# Example: Interfaces
+
+Compare:
+
+```rust
+trait Iterator {
+    type Item;
+
+    fn next(&mut self) -> Option<Self::Item>;
+}
+```
+
+with
+
+```java
+interface Iterator<T> {
+    T next();
+}
+```
+
+???
+
+Notice the `&mut self`. When you design a Rust interface, you say up front if you will be mutating the data in the receiver. This is cognitive overhead, but it's -- I believe -- the intrinsic kind.
+
+---
+
+# Example: Rc vs Arc
 
 Rust has two reference-counted types:
 
-* `Rc<T>`: reference counted
-* `Arc<T>`: *atomic* reference counted
+* `Rc<T>`: reference counted -- faster
+* `Arc<T>`: *atomic* reference counted -- works across threads
+
+Which should you use?
 
 ???
 
-Let's give an example where Rust makes you care about performance, but maybe you don't want to:
-reference counting. If you're not familiar with reference counting, it's a simple way to figure
-out when some piece of data is ready to be freed. The idea is to have a counter. Each time you give
-access to the data to a new part of the program, you increment the counter. Each time you are finished
-with it, you decrement the counter. When it reaches zero, you can free the data.
+This is harder, because there is a legitimate tradeoff here. When I worked at Mozilla, for example, folks lamented the fact that they used atomic reference counting throughout their C++ codebase. This was a cost they could never remove -- they'd never be able to get all the bugs out.
 
-If you've used Objective C, reference counting will be familiar. If you've used Swift, you're likely also 
-using reference counting, though "under the hood".
+Rust changes the game here. It's plausible to use `Arc` everywhere and then change to `Rc` where you think it makes sense. The compiler will catch you if you get it wrong.
 
-It turns out, though, that there's a subtle detail about reference counting that you've maybe *not*
-been exposed to. When you go to increment a reference count, there are actually multiple ways to do it -- and the *fastest* way is not safe if that reference count might be adjusted by multiple threads at once. 
-If you want something to be correct across threads, you need to use *atomic* arithmetic, which is slower.
-
-Most systems just use atomic reference counts and be done with it. Rust offers you the choice -- moreover, we
-check that you keep the two straight, and that you don't send a reference-counted value across threads unless
-it is atomic. On the one hand, this is great, and it's part of how Rust performs tend to perform better. 
-
-On the other hand, the performance difference here is pretty small most of the time, maybe not even measurable.
-If you're writing networking code, it's quite possible that it's not significant to you compared to the I/O
-latencies. But every Rust user has to know and think about it.
+But you still have to know about it, and it still infects APIs. This is hard.
 
 ---
 
-## Care about reliability
+# Example: Async vs not
 
-What does this Python code do?
-
-```python
-with open('README.md') as f:
-    data = f.readlines()
-    print(data);
-```
-
-???
-
-If you said "reads the contents of readme.txt", you're right, but only partially.
-Because you might wonder, what happens if `README.md` doesn't exist? The answer of
-course is that it throws an exception, and we can't really tell what will happen.
-
----
-
-## Care about reliability
-
-Equivalent code in Rust:
+Earlier we talked about async:
 
 ```rust
-fn main() {
-    let data = std::fs::read_to_string("README.md");
-    println!("{data}");
+trait AsyncIterator {
+    type Item;
+
+    async fn next(&mut self) -> Option<Self::Item>;
 }
 ```
 
-???
-
-Here is some equivalent code in Rust. Not too shabby, right? But wait, what happens if I try it. Well, the code 
-
----
-
-```rust
-fn main() {
-    let data = std::fs::read_to_string("README.md");
-    println!("{data}");
-}
-```
-
-yields
-
-```md
-error[E0277]: `Result<String, std::io::Error>` doesn't implement `Display`
- --> src/main.rs:3:16
-  |
-3 |     println!("{data}");
-  |                ^^^^ `Result<String, std::io::Error>` cannot be
-  |                     formatted with the default formatter
-```
+Great to have `AsyncIterator` and `AsyncDrop`, but will we wind up with an `AsyncFoo` for every sync `Foo`?
 
 ???
 
-What is this error? Well, it turns out that the value `read_to_string`
-returns isn't just a `String`. It's something called a `Result`,
-which a way of signalling that this result could be an error.
+Yet another choice you must make. Sync vs async.
 
 ---
 
-## Care about reliability
+# Think big
 
-Equivalent code in Rust:
+Rust is always looking for ways to **eliminate tradeoffs**:
+
+* Can we find a third way that means you don't have to think about it?
+
+---
+
+# Avoiding colors
+
+Maybe instead of defining traits like `AsyncIterator`, we should have `async Iterator`.
+
+Perhaps we can leveage the same mechanism for `const` (compile-time evaluation)?
+
+[Reference.]
+
+???
+
+Yosh
+
+---
+
+# Platforms
+
+Could
 
 ```rust
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let data = std::fs::read_to_string("README.md").unwrap();
-    println!("{data}");
+#[cfg(unix)]
+fn do_something_in_a_unix_way() { }
+```
+
+become
+
+```rust
+fn do_something_in_a_unix_way()
+where
+    std::Platform: Unix,
+{
+    ...
 }
 ```
 
 ---
 
-## Care about performance
+# Platforms
+
+Could
 
 ```rust
-let v = Box::new(vec![1, 2, 3]);
+#[cfg(unix)]
+fn do_something_in_a_unix_way() { }
+```
+
+become
+
+```rust
+fn do_something_in_a_unix_way()
+where
+    std::Platform: Unix,
+{
+    ...
+}
 ```
 
 ---
 
-## Rust is evolving
+# Rust 2024
 
-.p200[![Statue1](images/Statue1.png)]
+* Building on our strengths:
+    * Async and sync code working at par
+    * Stabilize key low-level capabilities
+    * Support unsafe code 
 
----
+* Addressing our weaknesses:
+    * Smarter analyses, less accidental complexity
+    * Developer tooling, documented patterns
 
-## Rust 2015
+* Thinking big:
+    * Now's the time!
 
-.p200[![Statue1](images/Statue2.png)]
-
----
-
-## Rust 2018
-
-.p200[![Statue1](images/Statue3.png)]
-
----
-
-## Rust 2021
-
-.p200[![Statue1](images/Statue4.png)]
-
----
-
-## Rust 2024
-
-???
