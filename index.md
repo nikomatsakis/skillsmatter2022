@@ -598,7 +598,7 @@ for as long as the reference runs.
 
 This *concept* I think is inherent complexity. It forces a certain style onto Rust code that takes a while to get used to. 
 
-But many 
+But the details of how Rust realizes it, those can often be accidental.
 
 ---
 
@@ -608,13 +608,44 @@ template: code-example
 
 ???
 
+As a simple example, this type signature indicates that the function will return
+a reference, and moreover that the return will come from the input. This is because
+of Rust's rules called "lifetime elision". 
+
 ---
 
 template: code-example
 
-.polonius[![Arrow pointing at option](images/Arrow.png)]
+.polonius1[![Return of `s`](images/Arrow.png)]
 
-In fact, this code doesn't compile! When you return a reference, 
+???
+
+But the reason I wanted to show you this example is because, in fact, it doesn't
+compile, although arguably it should. Why not? The problem is a limitation of
+our analysis. When you return a reference, as we do here, the compiler considers
+that reference to hold for the entire rest of the function.
+
+---
+
+template: code-example
+
+.polonius2[![Come from `list`](images/Arrow.png)]
+
+???
+
+Since `s` came from `list`, that means that we borrow `list` and don't permit
+anyone to use it.
+
+---
+
+template: code-example
+
+.polonius3[![Illegal push](images/Arrow.png)]
+
+???
+
+Which means we get an error here, when you call `push`.
+
 ---
 
 # Workaround
@@ -631,7 +662,13 @@ fn get_lazy(list: &mut Vec<String>) -> &mut String {
 }
 ```
 
-How would you know that this is the fix?
+???
+
+As it happens, you can rewrite this program like so, and it will work.
+
+How would you know that this is the fix? This code is definitely worse than the previous code. What's worse, if you wrote the old code, expecting it to compile, you would like feel like you didn't understand Rust when you can't figure out why it's getting an error.
+
+This is accidental complexity. As it happens, we know the fix -- there's a new analysis called polonius that we've been working on, and it would accept the original program. 
 
 ---
 
@@ -745,11 +782,7 @@ Maybe instead of defining traits like `AsyncIterator`, we should have `async Ite
 
 Perhaps we can leveage the same mechanism for `const` (compile-time evaluation)?
 
-[Reference.]
-
-???
-
-Yosh
+[Reference.](https://github.com/rust-lang/lang-team/issues/162)
 
 ---
 
@@ -775,25 +808,17 @@ where
 
 ---
 
-# Platforms
+# Building Rust 2024
 
-Could
+I don't exactly know what Rust 2024 will be like.
 
-```rust
-#[cfg(unix)]
-fn do_something_in_a_unix_way() { }
-```
+But I know it's going to be a community effort.
 
-become
+If you're interested in getting involved, take a look at some of the recent blog posts:
 
-```rust
-fn do_something_in_a_unix_way()
-where
-    std::Platform: Unix,
-{
-    ...
-}
-```
+* [Compiler team ambitions](https://blog.rust-lang.org/inside-rust/2022/02/22/compiler-team-ambitions-2022.html)
+* [Lang team roadmap for 2024](https://blog.rust-lang.org/inside-rust/2022/04/04/lang-roadmap-2024.html)
+* [Library team aspirations](https://blog.rust-lang.org/inside-rust/2022/04/20/libs-aspirations.html)
 
 ---
 
