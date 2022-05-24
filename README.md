@@ -1,3 +1,5 @@
-# Talk template
+# Talk for Skills Matter 2022
 
-Clone this repo for new talks
+[View slides](https://nikomatsakis.github.io/skillsmatter2022/#1)
+
+[With soundtrack](https://nikomatsakis.github.io/skillsmatter2022/#p1)
