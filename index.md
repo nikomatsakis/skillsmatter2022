@@ -780,8 +780,9 @@ trait Iterator {
 with
 
 ```java
-interface Iterator<T> {
-    T next();
+interface Iterator<E> {
+    bool hasNext();
+    E next();
 }
 ```
 
