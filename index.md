@@ -874,6 +874,8 @@ Maybe even skip compiling code that it didn't need?
 
 Can `cargo test` enforce unsafe code rules by default?
 
+Can we support verifiers and theorem provers, so that people can prove things about unsafe code?
+
 ---
 
 # Library with custom errors and lints
