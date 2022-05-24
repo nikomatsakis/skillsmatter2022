@@ -880,6 +880,50 @@ Can we support verifiers and theorem provers, so that people can prove things ab
 
 # Library with custom errors and lints
 
+[`diesel#2450`](https://github.com/diesel-rs/diesel/issues/2450)
+
+```rust
+let result = diesel::delete(
+        scripts
+            .filter(id.eq("1"))
+    )
+    .execute(session.db())
+    .map_err(|e| {
+        debug!("{:?}", e);
+        format!("Could not delete script.")
+    });
+```
+
+Problem? Using a string, not an integer.
+
+Error?
+
+---
+
+# Library with custom errors and lints
+
+```
+the trait bound `diesel::query_builder::SelectStatement<schema::scripts::table,
+ diesel::query_builder::select_clause::DefaultSelectClause,
+ diesel::query_builder::distinct_clause::NoDistinctClause, 
+ diesel::query_builder::where_clause::WhereClause<diesel::expression::operators::Eq
+ <schema::scripts::columns::id, &str>>>: diesel::query_builder::IntoUpdateTarget` is
+not satisfied
+
+the trait `diesel::query_builder::IntoUpdateTarget` is not implemented for
+ `diesel::query_builder::SelectStatement<schema::scripts::table,
+  diesel::query_builder::select_clause::DefaultSelectClause, 
+  diesel::query_builder::distinct_clause::NoDistinctClause, 
+  diesel::query_builder::where_clause::WhereClause<diesel::expression::operators::Eq
+  <schema::scripts::columns::id, &str>>>`
+
+help: the following implementations were found:
+<diesel::query_builder::SelectStatement<F, 
+diesel::query_builder::select_clause::DefaultSelectClause, 
+diesel::query_builder::distinct_clause::NoDistinctClause, W> as 
+diesel::query_builder::IntoUpdateTarget>rustc(E0277)
+```
+
 ---
 
 # Platforms
