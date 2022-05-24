@@ -349,8 +349,37 @@ Uh, I don't know. Nodody does, not yet.
 * If ease of iteration is your top priority:
     * Use a GC'd language like Python, Java, or Go
 
+???
 
-* But what about the software in the middle?
+This is where we are today. For projects that really need top-notch performance and reliability, people are increasingly choosing Rust. 
+
+But for projects where
+
+---
+
+.p20[![Ferris](./images/ferris.svg)] says:
+
+.text200["A stitch in time saves nine."]
+
+???
+
+And honestly, that makes sense. Rust is oriented at surfacing problems early. This makes Rust a great choice for projects where you really want to get it right, and you're willing to put in the time for that. 
+
+But if you'd rather be able to quickly modify code and not spend the time to get everything else in sync, it's not going to be a good choice for you.
+
+---
+
+# Where we are
+
+* If performance and reliability are your top considerations:
+    * Rust is your best choice
+
+
+* If ease of iteration is your top priority:
+    * Use a GC'd language like Python, Java, or Go
+
+
+* **But what about the software in the middle?**
 
 ---
 
@@ -379,8 +408,6 @@ Rust is doing really well in several areas:
 ```rust
 async fn process_connection() {
     something().await;
-
-    tokio::spawn(async move { ... })
 }
 ```
 
@@ -427,8 +454,11 @@ trait AsyncIterator {
 
 * Rust developer tooling like cargo, rust-analyzer, rustup is excellent...
     * ...but relatively limited options to debug/profile/test applications, especially async ones.
+    * but check out [tokio console]!
 
-[See async vision doc for more.]()
+[See async vision doc for more.](https://rust-lang.github.io/wg-async/vision.html)
+
+[tokio console]: https://github.com/tokio-rs/console
 
 ---
 
@@ -776,6 +806,16 @@ Rust is always looking for ways to **eliminate tradeoffs**:
 
 ---
 
+# Helping people learn to love the borrow checker
+
+What can we do to help people feel productive in Rust and to avoid getting stuck?
+
+---
+
+# Library with custom errors and lints
+
+---
+
 # Avoiding colors
 
 Maybe instead of defining traits like `AsyncIterator`, we should have `async Iterator`.
@@ -783,6 +823,20 @@ Maybe instead of defining traits like `AsyncIterator`, we should have `async Ite
 Perhaps we can leveage the same mechanism for `const` (compile-time evaluation)?
 
 [Reference.](https://github.com/rust-lang/lang-team/issues/162)
+
+---
+
+# Iterative tooling
+
+What if `cargo test` could run tests even when there were compilation errors? 
+
+Maybe even skip compiling code that it didn't need?
+
+---
+
+# Unsafe code
+
+Can `cargo test` run and detect problems by default?
 
 ---
 
