@@ -839,16 +839,6 @@ Rust is always looking for ways to **eliminate tradeoffs**:
 
 ---
 
-# Helping people learn to love the borrow checker
-
-What can we do to help people feel productive in Rust and to avoid getting stuck?
-
----
-
-# Library with custom errors and lints
-
----
-
 # Avoiding colors
 
 Maybe instead of defining traits like `AsyncIterator`, we should have `async Iterator`.
@@ -856,6 +846,17 @@ Maybe instead of defining traits like `AsyncIterator`, we should have `async Ite
 Perhaps we can leveage the same mechanism for `const` (compile-time evaluation)?
 
 [Reference.](https://github.com/rust-lang/lang-team/issues/162)
+
+---
+
+# Rc vs Arc
+
+There are many ways to make reference counting faster:
+
+* [Deferred reference counting](https://openresearch-repository.anu.edu.au/handle/1885/42030)
+* [Biased reference counting](https://dl.acm.org/doi/10.1145/3243176.3243195)
+
+Maybe we should try some of them?
 
 ---
 
@@ -869,7 +870,11 @@ Maybe even skip compiling code that it didn't need?
 
 # Unsafe code
 
-Can `cargo test` run and detect problems by default?
+Can `cargo test` enforce unsafe code rules by default?
+
+---
+
+# Library with custom errors and lints
 
 ---
 
