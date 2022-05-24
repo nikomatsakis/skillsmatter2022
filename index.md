@@ -454,11 +454,6 @@ trait AsyncIterator {
 
 * Rust developer tooling like cargo, rust-analyzer, rustup is excellent...
     * ...but relatively limited options to debug/profile/test applications, especially async ones.
-    * but check out [tokio console]!
-
-[See async vision doc for more.](https://rust-lang.github.io/wg-async/vision.html)
-
-[tokio console]: https://github.com/tokio-rs/console
 
 ---
 
@@ -466,20 +461,22 @@ trait AsyncIterator {
 
 * Async fn can be used everywhere: traits, closures, drop
 * Rich, interoperable library ecosystem
-* Tooling to analyze and debug neworked applications
+* Tooling like [tokio console] to analyze and debug neworked applications
 * Works on servers as well as bare-metal environments
+
+[tokio console]: https://github.com/tokio-rs/console
 
 ---
 
 # How do we get there?
 
-[Async vision doc]() lays out a few key areas:
+[Async vision doc](https://rust-lang.github.io/wg-async/vision.html) lays out a few key areas:
 
 * Core compiler support for async functions in traits
 * Traits for interoperability (read, write, spawn, etc)
 * Polish, diagnostics, tooling support
 
-[Would you like to help?]
+Would you like to help? [Join `#wg-async` on rust-lang Zulip](https://rust-lang.zulipchat.com/#narrow/stream/187312-wg-async).
 
 ---
 
@@ -503,7 +500,7 @@ trait AsyncIterator {
 
 I think we want a combination of
 
-* Building on our strengths :check:
+* Building on our strengths ✅
 * **Addressing our weaknesses**
 * Think big opportunities
 
@@ -595,6 +592,10 @@ template: code-example
 
 .option[![Arrow pointing at option](images/Arrow.png)]
 
+Inherent complexity: Representing many possibilities
+
+Accidental complexity: `Option` types, `if let` vs `match`
+
 ???
 
 Here's an example we can use to explore this idea a bit. This is a function
@@ -619,6 +620,10 @@ template: code-example
 
 .and-mut[![Arrow pointing at and-mut](images/Arrow.png)]
 
+Inherent complexity: Mutability xor sharing, pointers and references
+
+Accidental complexity: `&mut` syntax
+
 ???
 
 `&mut` references are a key part of Rust. 
@@ -636,17 +641,31 @@ template: code-example
 
 .ret-ref[![Arrow pointing at returning a ref](images/Arrow.png)]
 
+Inherent complexity: Returning a derived reference
+
+Accidental complexity: Lifetime elision
+
 ???
 
 As a simple example, this type signature indicates that the function will return
 a reference, and moreover that the return will come from the input. This is because
 of Rust's rules called "lifetime elision". 
 
+--
+
+```rust
+fn get_lazy<'a>(list: &'a mut Vec<String>) -> &'a mut String
+```
+
 ---
 
 template: code-example
 
 .polonius1[![Return of `s`](images/Arrow.png)]
+
+Accidental complexity: This code doesn't build!
+
+* `s` was returned from the function, so `s` is borrowed for the rest of the function
 
 ???
 
@@ -661,6 +680,9 @@ template: code-example
 
 .polonius2[![Come from `list`](images/Arrow.png)]
 
+* `s` was returned from the function, so `s` is borrowed for the rest of the function
+* `s` came from `list`, so `list` is borrowed for the rest of the function too
+
 ???
 
 Since `s` came from `list`, that means that we borrow `list` and don't permit
@@ -671,6 +693,12 @@ anyone to use it.
 template: code-example
 
 .polonius3[![Illegal push](images/Arrow.png)]
+
+* `s` was returned from the function, so `s` is borrowed for the rest of the function
+* `s` came from `list`, so `list` is borrowed for the rest of the function too
+* so `push` is illegal
+
+[Try it out](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=04de40f1c3a8805c105821b91ef9fb88)
 
 ???
 
@@ -691,6 +719,10 @@ fn get_lazy(list: &mut Vec<String>) -> &mut String {
     list.first_mut().unwrap()
 }
 ```
+
+.polonius4[![Borrow is inside the if](images/Arrow.png)]
+
+Workaround: move borrow inside the if
 
 ???
 
@@ -715,8 +747,8 @@ This is accidental complexity. As it happens, we know the fix -- there's a new a
 
 I think we want a combination of
 
-* Building on our strengths :check:
-* Addressing our weaknesses :check:
+* Building on our strengths ✅
+* Addressing our weaknesses ✅
 * **Think big opportunities**
 
 ---
