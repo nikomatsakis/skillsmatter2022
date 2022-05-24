@@ -843,7 +843,9 @@ Rust is always looking for ways to **eliminate tradeoffs**:
 
 Maybe instead of defining traits like `AsyncIterator`, we should have `async Iterator`.
 
-Perhaps we can leveage the same mechanism for `const` (compile-time evaluation)?
+Perhaps we can leverage the same mechanism for `const` (compile-time evaluation)?
+
+Can we write "maybe async" code that works in both modes?
 
 [Reference.](https://github.com/rust-lang/lang-team/issues/162)
 
